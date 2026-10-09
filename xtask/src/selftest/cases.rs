@@ -126,7 +126,11 @@ fn panic(root: &Path) -> anyhow::Result<()> {
 }
 
 fn upward_dependency(root: &Path) -> anyhow::Result<()> {
-    add_dependency(root, TYPES_MANIFEST, "jarvis-config = { path = \"../jarvis-config\" }")
+    add_dependency(
+        root,
+        TYPES_MANIFEST,
+        "jarvis-config = { path = \"../jarvis-config\" }",
+    )
 }
 
 fn http_in_core(root: &Path) -> anyhow::Result<()> {
