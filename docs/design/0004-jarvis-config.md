@@ -104,7 +104,7 @@ flowchart TD
 | L1 proptest | Rastgele IPv4/IPv6 adresleri: yalnızca loopback kabul | `IpAddr::is_loopback` |
 | L1 | `Paths::resolve`: `XDG_*` var/yok, dev/prod ayrımı | Beklenen yollar |
 
-## Uygulama notları (PR 3)
+## Uygulama notları (PR 3; onaylandı 2026-10-09, Yasin Akmaz)
 
 Onaylı tasarımı daraltan ya da netleştiren kararlar; hiçbiri bir kuralı gevşetmez.
 

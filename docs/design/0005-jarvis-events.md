@@ -95,7 +95,37 @@ tamamlayabilir (M2'de `GET /events?since=` olarak).
 | Seviye | Test | Oracle |
 | --- | --- | --- |
 | L1 | `sse_frame` biçimi; çok satırlı veride her satır `data:` önekli | Elle yazılmış çerçeve |
-| L1 | Tüm `EventKind` tel adları Mimari §3 tablosuyla aynı (insta) | Anı görüntüsü |
+| L1 | Tüm `EventKind` tel adları Mimari §3 tablosuyla aynı | Elle yazılmış tablo ve JSON |
 | L2 | Sıra numarası eşzamanlı yayında benzersiz ve artan | Sıralama özelliği |
 | L2 | Kapasite 4, 10 olay, abone okumuyor → `Lagged { missed: 6 }` | Aritmetik |
 | L2 | Sahte `AuditSink` hata verir → `publish` hata döner, abone olayı görmez | Abone kuyruğu boş |
+
+## Uygulama notları (PR 4)
+
+Onaylı tasarımı netleştiren kararlar; hiçbiri bir kuralı gevşetmez.
+
+- **Sıra ve kilit:** `publish` bir async kilidi sıra numarası atamadan yayına kadar tutar.
+  Böylece eşzamanlı yayında da denetim ve aboneler olayları sıra numarası sırasıyla görür.
+  Yayınlar sıralanır; denetim zaten tek yazarlıdır (ADR 0024).
+- **Boşluk, asla tekrar:** numara denetimden önce tüketilir. Denetim hatası ya da yarıda
+  bırakılan (`drop`) bir `publish` sıra numarasında boşluk bırakabilir; aynı numara iki kez
+  verilmez. Abone boşluğu numaralardan görebilir.
+- **Yeniden başlatma:** `EventBus::starting_at(seq)` denetim kaydındaki son numaradan devam
+  eder (`jarvisd` bağlar). `u64::MAX` kullanıldıktan sonra `PublishError::SequenceExhausted`;
+  sarma yok.
+- **Kapasite:** `NonZeroU16` (tokio `broadcast` 0'da panikler); ikinin kuvvetine yukarı
+  yuvarlanır. Test planındaki "kapasite 4 → `Lagged { missed: 6 }`" birebir sağlanır.
+- **Maskeleme:** `with_secrets` ile verilen değerler ve `Bearer <token>` denetimden **önce**
+  maskelenir. Alanlar: `run.step.detail`, `run.failed.message`, `tool.requested.call.arguments`,
+  `tool.completed` doğrulama nedeni, `desktop.unavailable.backend`/`reason`. `Debug`
+  gizli değerleri değil yalnızca sayısını gösterir.
+- **`StepPhase`:** `plan`, `act`, `verify`, `retry` (sağlayıcı geri çekilmesi, Mimari §3).
+- **`ToolCallSummary`:** argümanların sıkıştırılmış JSON'u, en çok 512 karakter (bayt değil);
+  kesilirse sonuna `…` eklenir.
+- **Onay olayları:** `approval.requested`/`approval.resolved` M2'de eklenir; `EventKind`
+  `#[non_exhaustive]`.
+- **Tel biçimi:** olay JSON'u düzdür (`seq`, `at`, `run_id`, `trace_id`, `type`, alanlar).
+  Kayıp bildirimi `event: events.lagged` + `data: {"missed":N}`; `id:` taşımaz, istemcinin
+  `Last-Event-ID`'si ilerlemez.
+- **`insta` yok:** tel adları ve çerçeveler elle yazılmış beklenen değerlerle sınanır
+  (Tasarım 0004'teki gerekçe).
