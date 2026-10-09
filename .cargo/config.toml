@@ -1,0 +1,3 @@
+# `cargo xtask <komut>`: kalite kapıları ve sürüm komutları (Mimari §9).
+[alias]
+xtask = "run --quiet --package xtask --"

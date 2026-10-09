@@ -1,0 +1,56 @@
+# cargo-deny: lisans, güvenlik açığı, yasaklı crate, kaynak ve çoğaltma denetimi
+# (Mimari §9 Katman 4). Yalnızca insan değiştirir.
+
+[graph]
+all-features = true
+
+[advisories]
+version = 2
+yanked = "deny"
+ignore = []
+
+[licenses]
+version = 2
+confidence-threshold = 0.9
+allow = [
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "MIT",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Unicode-3.0",
+    "Zlib",
+]
+
+[licenses.private]
+# publish = false olan kendi crate'lerimiz lisans denetiminden muaf.
+ignore = true
+
+[bans]
+# Çoğaltma şimdilik uyarı; ağır bağımlılıklar (tokio ekosistemi) geldiğinde M1'de
+# yeniden değerlendirilir (ADR 0021).
+multiple-versions = "warn"
+wildcards = "deny"
+allow-wildcard-paths = true
+deny = [
+    # ADR 008: girdi enjeksiyonu yalnızca portal + libei. uinput/XTEST/xdo yasak.
+    { name = "uinput", reason = "ADR 008" },
+    { name = "uinput-sys", reason = "ADR 008" },
+    { name = "evdev", reason = "ADR 008: uinput yazımı" },
+    { name = "enigo", reason = "ADR 008: XTEST/xdo/uinput" },
+    { name = "rdev", reason = "ADR 008" },
+    { name = "autopilot", reason = "ADR 008" },
+    { name = "libxdo", reason = "ADR 008" },
+    { name = "libxdo-sys", reason = "ADR 008" },
+    { name = "x11", reason = "ADR 008: XTEST" },
+    # ADR 019: otomatik güncelleme yok.
+    { name = "self_update", reason = "ADR 019" },
+    { name = "self-replace", reason = "ADR 019" },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

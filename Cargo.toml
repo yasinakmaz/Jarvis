@@ -1,0 +1,56 @@
+[workspace]
+resolver = "3"
+members = ["crates/*", "xtask"]
+exclude = ["spikes"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+repository = "https://github.com/yasinakmaz/Jarvis"
+
+[workspace.dependencies]
+# Üçüncü taraf bağımlılıklar yalnızca supply-chain/allowlist.toml'da ADR ile
+# kayıtlıysa eklenebilir (Mimari §9 Katman 4). `cargo xtask verify` denetler.
+anyhow = "1.0.104"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+toml = "1.1.8"
+
+# --- Kalite kapısı: lint tablosu -------------------------------------------
+# Bu tablo xtask/src/baseline/workspace_lints.toml ile birebir aynı olmalıdır;
+# `cargo xtask verify` farkı kırmızı sayar. Yalnızca insan değiştirir (§9).
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "deny"
+unused_must_use = "deny"
+
+[workspace.lints.rustdoc]
+broken_intra_doc_links = "deny"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+allow_attributes = "deny"
+allow_attributes_without_reason = "deny"
+arithmetic_side_effects = "deny"
+await_holding_lock = "deny"
+await_holding_refcell_ref = "deny"
+dbg_macro = "deny"
+expect_used = "deny"
+indexing_slicing = "deny"
+panic = "deny"
+print_stdout = "deny"
+todo = "deny"
+undocumented_unsafe_blocks = "deny"
+unimplemented = "deny"
+unwrap_used = "deny"
+# --- Kalite kapısı sonu ------------------------------------------------------
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+strip = "symbols"

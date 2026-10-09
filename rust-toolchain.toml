@@ -1,0 +1,5 @@
+# Sabitlenmiş araç zinciri (Mimari §9 Katman 1). Yalnızca insan değiştirir.
+[toolchain]
+channel = "1.97.0"
+components = ["rustfmt", "clippy", "llvm-tools-preview"]
+profile = "minimal"

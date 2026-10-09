@@ -1,0 +1,24 @@
+# Doğrudan üçüncü taraf bağımlılık beyaz listesi (Mimari §9 Katman 4).
+#
+# Yeni giriş: `cargo xtask crate-info <ad>` çıktısı + gerekçeli ADR (docs/adr/) +
+# insan onayı. Yapay zeka bu dosyayı değiştiremez (PreToolUse hook'u, CODEOWNERS).
+
+[[crate]]
+name = "anyhow"
+adr = "0020"
+reason = "xtask: bağlamlı hata zinciri; yalnızca geliştirici aracı."
+
+[[crate]]
+name = "serde"
+adr = "0020"
+reason = "xtask: architecture.toml, allowlist ve cargo metadata ayrıştırma."
+
+[[crate]]
+name = "serde_json"
+adr = "0020"
+reason = "xtask: cargo metadata, crates.io API ve hook girdisi (JSON)."
+
+[[crate]]
+name = "toml"
+adr = "0020"
+reason = "xtask: Cargo.toml ve kapı yapılandırma dosyalarını ayrıştırma."

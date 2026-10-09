@@ -1,0 +1,17 @@
+# Bağımlılık ve action güncellemeleri PR olarak gelir ve aynı kapılardan geçer (Mimari §11).
+# Yeni bir doğrudan bağımlılık eklenmez; yalnızca mevcutlar güncellenir.
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+  - package-ecosystem: github-actions
+    directories: ["/", "/.github/actions/setup"]
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(ci)"
