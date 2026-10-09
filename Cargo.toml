@@ -22,6 +22,8 @@ time = { version = "0.3.55", default-features = false, features = ["std", "forma
 uuid = { version = "1.27.0", features = ["v7"] }
 proptest = "1.11.0"
 tokio = { version = "1.53.2", default-features = false }
+rusqlite = { version = "0.40.2", features = ["bundled"] }
+tempfile = "3.27.0"
 
 # --- Kalite kapısı: lint tablosu -------------------------------------------
 # Bu tablo xtask/src/baseline/workspace_lints.toml ile birebir aynı olmalıdır;

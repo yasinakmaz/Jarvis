@@ -100,7 +100,7 @@ tamamlayabilir (M2'de `GET /events?since=` olarak).
 | L2 | Kapasite 4, 10 olay, abone okumuyor → `Lagged { missed: 6 }` | Aritmetik |
 | L2 | Sahte `AuditSink` hata verir → `publish` hata döner, abone olayı görmez | Abone kuyruğu boş |
 
-## Uygulama notları (PR 4)
+## Uygulama notları (PR 4; onaylandı 2026-10-09, Yasin Akmaz)
 
 Onaylı tasarımı netleştiren kararlar; hiçbiri bir kuralı gevşetmez.
 

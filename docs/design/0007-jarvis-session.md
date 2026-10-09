@@ -110,7 +110,7 @@ Migrasyonlar `migrations/NNNN_ad.sql` dosyalarıdır (`include_str!`), yalnızca
 | Seviye | Test | Oracle |
 | --- | --- | --- |
 | L5a | Boş dizinde aç → v1 şema; tekrar aç → migrasyon yok, yedek yok | Dosya sistemi, `schema_meta` |
-| L5a | v0 (eski) dosya → `jarvis.db.bak-0` oluşur, içeriği eskiyle aynı | Bayt karşılaştırma |
+| L5a | v0 (eski) dosya → `jarvis.db.bak-0` oluşur, içeriği eskiyle aynı | Bağımsız bağlantıyla tablo ve satırlar |
 | L5a | `version = 99` → `NewerSchema`, dosya değişmez | Dosya özeti |
 | L5a | Denetim satırında UPDATE/DELETE reddedilir | SQLite hata kodu |
 | L1 proptest | Mesaj ekle/oku gidiş-dönüşü, sıra korunur | Eşitlik |
@@ -122,3 +122,32 @@ Migrasyonlar `migrations/NNNN_ad.sql` dosyalarıdır (`include_str!`), yalnızca
 1. Saklama süresi: oturum/mesajlar için `retention_days` makul; denetim kaydı yalnızca
    eklemeli olduğu için silinmez mi, yoksa ayrı arşiv dosyasına mı taşınır? (Öneri: v1'de
    silinmez; boyut ölçülür.)
+
+## Uygulama notları (PR 5)
+
+Onaylı tasarımı netleştiren kararlar; hiçbiri bir kuralı gevşetmez.
+
+- **Zaman damgaları `INTEGER` (Unix milisaniyesi):** şemadaki `TEXT` yerine. `time`'ın RFC 3339
+  çıktısı kesir basamağı sayısını değiştirdiği için metin sıralaması yanlış olabilir
+  (`…00.5Z` < `…00Z`); `list_sessions` `updated_at`'e göre sıralar. Sonuç: milisaniye
+  çözünürlüğü (test edildi).
+- **Dosya izinleri:** yeni dosya (ve eksik üst dizinler) `0600` ile oluşturulur. Var olan
+  dosyada grup/diğer izin biti varsa açma **reddedilir** (`StoreError::Permissions`); sessizce
+  düzeltilmez. Token dosyasıyla aynı yaklaşım (Tasarım 0010).
+- **Sıra:** izin → şema sürümü → (gerekirse) yedek → bağlantı ayarları → migrasyon. Daha yeni
+  şemalı ya da bozuk sürümlü dosyaya hiç yazılmaz (bayt karşılaştırmasıyla test edildi).
+- **Yedek:** önce `0600` boş dosya (`create_new`), sonra `VACUUM INTO`. Var olan yedeğin
+  üzerine yazılmaz; migrasyon yapılmaz ve açık hata döner. `VACUUM INTO` bayt kopyası
+  üretmediği için test oracle'ı tablo ve satır içeriğidir.
+- **Bozuk sürüm:** `schema_meta` var ama `version` satırı yok, sayı değil ya da negatifse
+  `StoreError::Corrupt`.
+- **Aktör:** sınırlı kuyruk (256) ile geri basınç; çağıran vazgeçse de iş tamamlanır.
+  `Store::open` engelleyicidir (başlangıçta bir kez; `jarvisd` `spawn_blocking` ile çağırır).
+- **Ek API:** `next_audit_seq` (olay veriyolunun `starting_at`'i için, Tasarım 0005 notu) ve
+  `Page` (1–100 kayıt, en son güncellenen önce). `messages` ve `append_messages` olmayan
+  oturum için `UnknownSession` döner; toplu ekleme tek transaction'dır.
+- **`record_run`:** aynı kimlikle ikinci kayıt yalnızca `finished_at` ve `outcome`'u günceller;
+  `outcome` metni `finished` ya da hata kodunun tel adıdır.
+- **Denetim `seq`:** SQLite `INTEGER` `i64`'tür; `i64::MAX` üstü `OutOfRange` hatası, aynı
+  `seq` birincil anahtar ihlaliyle reddedilir.
+- **Açık soru 1 (saklama):** v1'de silme yok; karar M2'ye kalır.
