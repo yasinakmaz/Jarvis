@@ -1,0 +1,2 @@
+providers.empty.api_key_env: EMPTY_KEY tanımlı değil (secrets.env)
+providers.nvidia.api_key_env: MISSING_KEY tanımlı değil (secrets.env)

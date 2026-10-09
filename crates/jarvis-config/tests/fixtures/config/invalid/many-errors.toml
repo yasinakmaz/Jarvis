@@ -1,0 +1,32 @@
+# Hatalar ilk hatada durmadan, dosya sırasıyla değil şema sırasıyla toplanır.
+schema_version = 1
+colour = "blue"
+
+[server]
+listen = "192.168.1.5:0"
+
+[limits]
+max_steps = 0
+max_run_seconds = -5
+repeat_threshold = "three"
+
+[providers.Bad]
+base_url = "http://api.example.com/v1"
+api_key_env = "1KEY"
+model = ""
+capabilities = ["tools", "tools", "telepathy", 7]
+requests_per_minute = 0
+timeout_seconds = 4294967296
+
+[providers.ok]
+base_url = "https://integrate.api.nvidia.com/v1"
+api_key_env = "NVIDIA_API_KEY"
+model = "m"
+capabilities = "tools"
+requests_per_minute = 40
+timeout_seconds = 60
+
+[roles]
+planner = "ghost"
+fast = "Bad"
+vison = "ok"

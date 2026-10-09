@@ -3,7 +3,7 @@
 - **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 3)
 - **İlgili ADR'ler:** 0002, 0027, 0030
-- **Bağımlılıklar:** `jarvis-types`, `serde`, `toml`, `thiserror`
+- **Bağımlılıklar:** `toml`, `thiserror` (uygulamada; bkz. Uygulama notları)
 
 ## Amaç
 
@@ -99,7 +99,38 @@ flowchart TD
 
 | Seviye | Test | Oracle |
 | --- | --- | --- |
-| L1 | `tests/fixtures/config/*.toml`: her geçersiz örnek için beklenen hata listesi | Elle yazılmış beklenen çıktı (insta) |
+| L1 | `tests/fixtures/config/*.toml`: her geçersiz örnek için beklenen hata listesi | Elle yazılmış `.expected` dosyası |
 | L1 | Birden çok hata aynı anda raporlanır | Hata sayısı |
 | L1 proptest | Rastgele IPv4/IPv6 adresleri: yalnızca loopback kabul | `IpAddr::is_loopback` |
 | L1 | `Paths::resolve`: `XDG_*` var/yok, dev/prod ayrımı | Beklenen yollar |
+
+## Uygulama notları (PR 3)
+
+Onaylı tasarımı daraltan ya da netleştiren kararlar; hiçbiri bir kuralı gevşetmez.
+
+- **Oracle dosyaları:** `insta` yerine her geçersiz örneğin yanında elle yazılmış bir
+  `.expected` dosyası var. `insta`'nın "çıktıyı kabul et" akışı, beklenen değeri test edilen
+  koddan türetmeye teşvik eder; düz dosya bağımlılık da eklemez. Her örneğin bir testi olduğu
+  ayrıca denetlenir.
+- **Ayrıştırma:** `serde` + `deny_unknown_fields` ilk hatada durduğu için belge önce
+  `toml::Table`'a ayrıştırılır, sonra şemaya göre elle gezilir. Böylece bilinmeyen alanlar,
+  tip hataları ve kurallar tek seferde, alan yoluyla raporlanır. Sıra dosya sırası değil
+  şema sırasıdır: üst düzey bilinmeyen alanlar, `server`, `limits`, `providers` (ada göre),
+  `roles`; her tabloda önce bilinmeyen alanlar.
+- **Yazım önerisi:** bilinen bir alana Levenshtein uzaklığı ≤ 2 ise (`modle` → `model`).
+- **Varsayılanlar:** `[server]` ve `[limits]` (ve alanları) isteğe bağlıdır; belgelenmiş
+  varsayılanlar `Server::DEFAULT_LISTEN` ve `Limits::DEFAULT_*` sabitlerindedir.
+  Sağlayıcı alanlarının hepsi zorunludur (hız sınırı ve zaman aşımı sağlayıcıya özgüdür).
+- **Ek kurallar:** dinleme portu 0 olamaz (istemciler rastgele portu bulamaz). Tamsayılar
+  `1..=u32::MAX`. Aynı yetenek iki kez yazılamaz. `api_key_env` tanımlı ama boşsa eksik sayılır.
+- **`base_url`:** `url` crate'i eklenmedi; `BaseUrl` güvenlik açısından önemli kuralları
+  denetler: `https://`, ya da yalnızca loopback (`127.0.0.0/8`, `::1`, `localhost`) için
+  `http://`; boş sunucu adı, URL'de kimlik bilgisi (`kullanıcı:parola@`), sorgu/parça,
+  geçersiz port ve boşluk reddedilir.
+- **Geçersiz sağlayıcıya rol:** dosyada tanımlı ama kendi alanları geçersiz bir sağlayıcıyı
+  gösteren rol için ek hata üretilmez (asıl hata sağlayıcıda raporlanmıştır).
+- **XDG:** `XDG_CONFIG_HOME`/`XDG_DATA_HOME` boşsa tanımsız sayılır (XDG belirtimi). Göreli
+  değer XDG'de "geçersiz, yok say" diye tanımlıdır; burada sessiz geri dönüş yerine **hata**dır.
+  `HOME` yalnızca bir XDG değişkeni eksikse gerekir.
+- **`jarvis-types` bağımlılığı:** M1 kapsamında config bu crate'ten bir tip kullanmadığı için
+  eklenmedi (kullanılmayan bağımlılık `machete` kapısında kırmızıdır).
