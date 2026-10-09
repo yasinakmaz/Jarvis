@@ -25,6 +25,7 @@ git rm docs/runbooks/pending/<yama>.patch
 | `0003-m1-architecture.patch` | `jarvis-testkit` (`production = false`) ve provider/core/api/jarvisd için `dev_allowed` (ADR 0031) | Uygulandı (2026-10-09, kullanıcının açık izniyle) |
 | `0004-cargo-hack-no-dev-deps.patch` | `cargo hack --no-dev-deps` dev-bağımlılıkları manifestten geçici silip `Cargo.lock`'u değiştiriyor, `--locked` ile çakışıyordu (ilk dev-bağımlılıkla ortaya çıktı); resolver 3'te bayrak gereksiz | Uygulandı (2026-10-09, kullanıcının açık izniyle) |
 | `0005-selftest-bagimlilik-tablosu.patch` | Selftest bağımlılık bozulmaları ikinci bir `[dependencies]` başlığı ekleyip TOML'u bozuyordu (crate kendi tablosunu edinince); satır artık var olan tabloya ekleniyor | Uygulandı (2026-10-09, kullanıcının açık izniyle) |
+| `0006-selftest-cargo-fetch.patch` | Selftest kopyaları `--offline` derlendiği için taze CI konteynerinde yeni bağımlılıklar bulunamıyordu; selftest başında `cargo fetch --locked` | Uygulandı (2026-10-09, kapı hatası kuralıyla); boş `CARGO_HOME` ile yeniden üretilip düzeltildiği doğrulandı |
 
 Uygulamadan önce kontrol (yalnızca okur): yamalar `git apply --check` ile temiz; bellekte
 uygulandığında `architecture.toml` geçerli TOML, allowlist'teki her ADR mevcut.

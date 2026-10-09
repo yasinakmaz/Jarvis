@@ -48,6 +48,10 @@ pub fn main(_args: &[String]) -> anyhow::Result<ExitCode> {
     let root = workspace::root();
     let base = workspace::scratch(&root).join("selftest");
     let mut failures = Vec::new();
+    // Kopyalar `--offline` derlenir (bozulmaya ağ etkisi karışmasın); taze bir ortamda
+    // (CI konteyneri) bağımlılıkların önceden indirilmiş olması gerekir.
+    cmd::run(cmd::cargo(&root).args(["fetch", "--locked"]))
+        .context("bağımlılıklar indirilemedi; selftest kopyaları çevrimdışı derlenir")?;
     control(&root, &base).context("kontrol kopyası (bozulmasız) temiz değil")?;
     eprintln!("✔ kontrol: bozulmasız kopya tüm kapılardan geçiyor");
     for case in cases::all() {
