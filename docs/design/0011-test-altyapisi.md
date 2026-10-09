@@ -81,3 +81,17 @@ impl CassetteServer {
 | Kaset kaydı `Authorization` içermez (kayıt modu, yerel sahte üst uç ile) | Dosya taraması |
 | Kaset: `CI=1` iken kayıt modu reddedilir | Hata |
 | Smoke: kasıtlı başarısız görevlerin hepsi kırmızı, diğerleri yeşil | Eval raporu |
+
+## Uygulama notları (PR 6)
+
+- **Bölünmüş teslim:** `StubLlm` `jarvis-provider`'ın `ChatModel` trait'ine, `FakeTool`
+  `jarvis-tools`'un `Tool` trait'ine bağlıdır; bu trait'ler henüz yok. PR 6 yalnızca bugün
+  kurulabilenleri içerir: `FakeClock` ve `MemorySessions`. `StubLlm` ve `CassetteServer`
+  PR 7 (provider) ile, `FakeTool` PR 8 (tools) ile eklenir; tasarımdaki sözleşmeler
+  değişmez.
+- **`FakeClock::new(start)`:** bekleme süresi `sleep` **çağrıldığı** andan ölçülür; sıfır süre
+  hemen çözülür; `advance` yalnızca süresi dolanları uyandırır (başka iş parçacığındaki görev
+  dahil). Aralık dışına (yıl 9999 sonrası) ilerletme saati değiştirmez.
+- **`MemorySessions`:** `jarvis_session::Store` ile aynı gözlenebilir davranış; bunu aynı
+  senaryoyu iki uygulamada çalıştıran sözleşme testi kanıtlar (oracle gerçek SQLite).
+  Ek olarak `runs()` (oracle) ve `fail_with(Some(hata))` (hata yolu testleri).

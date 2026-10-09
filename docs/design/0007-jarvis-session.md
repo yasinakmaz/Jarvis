@@ -123,7 +123,7 @@ Migrasyonlar `migrations/NNNN_ad.sql` dosyalarıdır (`include_str!`), yalnızca
    eklemeli olduğu için silinmez mi, yoksa ayrı arşiv dosyasına mı taşınır? (Öneri: v1'de
    silinmez; boyut ölçülür.)
 
-## Uygulama notları (PR 5)
+## Uygulama notları (PR 5; onaylandı 2026-10-09, Yasin Akmaz)
 
 Onaylı tasarımı netleştiren kararlar; hiçbiri bir kuralı gevşetmez.
 

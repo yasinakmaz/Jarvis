@@ -280,6 +280,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "jarvis-testkit"
+version = "0.1.0"
+dependencies = [
+ "jarvis-session",
+ "jarvis-types",
+ "tempfile",
+ "tokio",
+]
+
+[[package]]
 name = "jarvis-tools"
 version = "0.1.0"
 
