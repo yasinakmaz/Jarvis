@@ -47,6 +47,22 @@ fn append(root: &Path, rel: &str, text: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
+/// Manifeste bir bağımlılık satırı ekler: `[dependencies]` tablosu varsa içine, yoksa yeni
+/// tablo açarak. (İkinci bir `[dependencies]` başlığı geçersiz TOML olur ve kapı yerine
+/// `cargo metadata` hata verirdi.)
+fn add_dependency(root: &Path, rel: &str, line: &str) -> anyhow::Result<()> {
+    let path = root.join(rel);
+    let content = std::fs::read_to_string(&path).with_context(|| rel.to_owned())?;
+    let header = "\n[dependencies]\n";
+    let updated = if content.contains(header) {
+        content.replacen(header, &format!("{header}{line}\n"), 1)
+    } else {
+        format!("{content}{header}{line}\n")
+    };
+    std::fs::write(path, updated)?;
+    Ok(())
+}
+
 fn replace(root: &Path, rel: &str, from: &str, to: &str) -> anyhow::Result<()> {
     let path = root.join(rel);
     let content = std::fs::read_to_string(&path).with_context(|| rel.to_owned())?;
@@ -110,19 +126,11 @@ fn panic(root: &Path) -> anyhow::Result<()> {
 }
 
 fn upward_dependency(root: &Path) -> anyhow::Result<()> {
-    append(
-        root,
-        TYPES_MANIFEST,
-        "\n[dependencies]\njarvis-config = { path = \"../jarvis-config\" }\n",
-    )
+    add_dependency(root, TYPES_MANIFEST, "jarvis-config = { path = \"../jarvis-config\" }")
 }
 
 fn http_in_core(root: &Path) -> anyhow::Result<()> {
-    append(
-        root,
-        "crates/jarvis-core/Cargo.toml",
-        "\n[dependencies]\naxum = \"0.8\"\n",
-    )
+    add_dependency(root, "crates/jarvis-core/Cargo.toml", "axum = \"0.8\"")
 }
 
 fn unlisted_crate(root: &Path) -> anyhow::Result<()> {
@@ -138,7 +146,7 @@ fn unlisted_crate(root: &Path) -> anyhow::Result<()> {
 }
 
 fn unlisted_dependency(root: &Path) -> anyhow::Result<()> {
-    append(root, TYPES_MANIFEST, "\n[dependencies]\nrandd = \"0.8\"\n")
+    add_dependency(root, TYPES_MANIFEST, "randd = \"0.8\"")
 }
 
 fn weakened_lints(root: &Path) -> anyhow::Result<()> {

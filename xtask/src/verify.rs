@@ -148,12 +148,14 @@ fn dependencies(ctx: &mut Ctx) -> anyhow::Result<()> {
     cmd::run(cmd::cargo(&ctx.root).args(["deny", "--all-features", "--locked", "check"]))?;
     cmd::run(cmd::cargo(&ctx.root).args(["machete"]))
         .context("kullanılmayan bağımlılık var; Cargo.toml'dan kaldırın")?;
+    // `--no-dev-deps` kullanılmaz: manifestten dev-bağımlılıkları geçici olarak silip
+    // `Cargo.lock`'u değiştirir ve `--locked` ile çakışır. Resolver 3'te dev-bağımlılık
+    // özellikleri normal derlemeyle zaten birleşmediği için ek bir şey yakalamaz.
     cmd::run(cmd::cargo(&ctx.root).args([
         "hack",
         "check",
         "--workspace",
         "--each-feature",
-        "--no-dev-deps",
         "--locked",
     ]))
 }
