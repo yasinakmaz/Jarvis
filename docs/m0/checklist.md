@@ -18,7 +18,7 @@ güncellenir.
 | 9 | Portalda `Notify*` mutlak işaretçi, akışsız | EIS bölge tabanlı yol | `spikes/portal-session` | bekliyor | | |
 | 10 | Sanal KWin'de ScreenShot2 veri veriyor mu | Ekran testleri L5c'ye kayar | `spikes/kwin-virtual` | bekliyor | | |
 | 11 | RPM: `cargo-generate-rpm`, kurulum, dev/prod kimlik ayrımı | `rpmbuild` spec | `spikes/rpm` | bekliyor | | |
-| 12 | Claude Code hook davranışı (exit 2 engelleme, `Stop`) | `pre-commit` + CI zorlaması | `.claude/` (aşağıda) | bekliyor | | |
+| 12 | Claude Code hook davranışı (exit 2 engelleme, `Stop`) | `pre-commit` + CI zorlaması | `.claude/` (aşağıda) | kısmen geçti | 2026-10-09 | PreToolUse, hook dosyası eklendiği anda çalışan bulut oturumunda devreye girdi; korunan dosyaya `Bash` ile yazma denemesini exit 2 ile engelledi, gerekçe modele gösterildi. Bash denetimi en iyi çabadır: korunan adı anmayan dolaylı yazımları (yama dosyası, betik) yakalamaz — asıl zorlama CODEOWNERS + branch protection + CI. PostToolUse ve Stop yerel Fedora kurulumunda denenmeli. |
 | 13 | KDE global kısayoluyla `halt` (M3) | `POST /halt` yeterli | `spikes/halt-shortcut` | bekliyor | | |
 
 ## #12 için el ile deneme

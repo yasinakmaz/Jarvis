@@ -11,11 +11,30 @@ pub const REQUIRED_TOOLS: &[&str] = &["nextest", "deny", "llvm-cov", "mutants", 
 const INSTALL_HINT: &str = "kurulum: cargo binstall cargo-nextest cargo-deny cargo-llvm-cov \
                             cargo-mutants cargo-machete cargo-hack";
 
+/// `cargo run`'ın xtask için ayarladığı ve alt araçları yanıltan değişkenler
+/// (ör. `cargo-machete` `CARGO_PKG_NAME` görünce argümanları yol sanır).
+const CARGO_RUN_VARS: &[&str] = &[
+    "CARGO_MANIFEST_DIR",
+    "CARGO_MANIFEST_PATH",
+    "CARGO_CRATE_NAME",
+    "CARGO_BIN_NAME",
+    "CARGO_PRIMARY_PACKAGE",
+];
+
 /// `root` dizininde çalışacak bir `cargo` komutu hazırlar.
 pub fn cargo(root: &Path) -> Command {
     let mut command = Command::new(std::env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
     command.current_dir(root);
+    for (key, _) in std::env::vars_os() {
+        if key.to_str().is_some_and(is_cargo_run_var) {
+            command.env_remove(&key);
+        }
+    }
     command
+}
+
+fn is_cargo_run_var(key: &str) -> bool {
+    key.starts_with("CARGO_PKG_") || CARGO_RUN_VARS.contains(&key)
 }
 
 /// `root` dizininde çalışacak bir `git` komutu hazırlar.
@@ -81,4 +100,18 @@ pub fn require_tools(root: &Path, tools: &[&str]) -> anyhow::Result<()> {
         "eksik araç(lar): cargo-{}\n{INSTALL_HINT}",
         missing.join(", cargo-")
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn strips_only_variables_set_by_cargo_run() {
+        assert!(is_cargo_run_var("CARGO_PKG_NAME"));
+        assert!(is_cargo_run_var("CARGO_MANIFEST_DIR"));
+        assert!(!is_cargo_run_var("CARGO_HOME"));
+        assert!(!is_cargo_run_var("CARGO_TARGET_DIR"));
+        assert!(!is_cargo_run_var("PATH"));
+    }
 }

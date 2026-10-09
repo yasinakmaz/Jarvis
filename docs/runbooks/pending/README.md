@@ -10,6 +10,6 @@ cargo xtask verify && cargo xtask selftest
 git rm docs/runbooks/pending/<yama>.patch
 ```
 
-| Yama | Neden |
-| --- | --- |
-| `0001-cargo-run-ortam-sizintisi.patch` | `cargo xtask` `cargo run` ile çalıştığında `CARGO_PKG_*` / `CARGO_MANIFEST_DIR` alt araçlara sızıyor; `cargo-machete` bunları görünce argümanları yol sanıp çöküyor ve `verify` "eksik araç: cargo-machete" ile kırmızı oluyor. Derlenmiş ikili doğrudan çalıştırıldığında (`target/debug/xtask verify --base root`) 10/10 adım 17,6 sn'de yeşil. |
+| Yama | Neden | Durum |
+| --- | --- | --- |
+| `0001-cargo-run-ortam-sizintisi.patch` | `cargo run`'ın `CARGO_PKG_*` / `CARGO_MANIFEST_DIR` değişkenleri alt araçlara sızıyor, `cargo-machete` çöküyordu | Uygulandı (2026-10-09, kullanıcının açık izniyle) |
