@@ -1,0 +1,45 @@
+--- a/architecture.toml
++++ b/architecture.toml
+@@ -23,6 +23,7 @@
+ 
+ [crates.jarvis-provider]
+ allowed = ["jarvis-types", "jarvis-config"]
++dev_allowed = ["jarvis-testkit"]
+ 
+ [crates.jarvis-session]
+ allowed = ["jarvis-types"]
+@@ -64,10 +65,12 @@
+     "jarvis-events",
+     "jarvis-tools",
+ ]
++dev_allowed = ["jarvis-testkit"]
+ forbidden_external = ["@http_crates"]
+ 
+ [crates.jarvis-api]
+ allowed = ["jarvis-types", "jarvis-core"]
++dev_allowed = ["jarvis-testkit"]
+ 
+ [crates.jarvisd]
+ allowed = [
+@@ -86,9 +89,21 @@
+     "jarvis-core",
+     "jarvis-api",
+ ]
++dev_allowed = ["jarvis-testkit"]
+ 
+ [crates.jarvis-cli]
+ allowed = ["jarvis-types"]
++
++[crates.jarvis-testkit]
++# ADR 0031: test sahteleri ve kaset sunucusu; üretim ikililerine girmez.
++allowed = [
++    "jarvis-types",
++    "jarvis-provider",
++    "jarvis-session",
++    "jarvis-tools",
++    "jarvis-approval",
++]
++production = false
+ 
+ [crates.jarvis-fixture]
+ allowed = []
