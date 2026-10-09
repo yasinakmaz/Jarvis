@@ -1,6 +1,6 @@
 # ADR 0020: xtask bağımlılıkları (`anyhow`, `serde`, `serde_json`, `toml`)
 
-- **Durum:** Kabul edildi (insan onayı bekliyor: bu PR'ın gözden geçirilmesi)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §9 Katman 4
 

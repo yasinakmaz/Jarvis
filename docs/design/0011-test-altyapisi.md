@@ -1,6 +1,6 @@
 # Tasarım 0011: M1 test altyapısı (`jarvis-testkit`, kaset, smoke eval)
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 6, 7, 12)
 - **İlgili ADR'ler:** 0028, 0031
 - **Bağımlılıklar:** `jarvis-types`, `jarvis-provider`, `jarvis-session`, `jarvis-tools`,

@@ -1,6 +1,6 @@
 # ADR 0028: Test bağımlılıkları: `proptest`, `insta`, `tempfile`; testkit'te `reqwest`
 
-- **Durum:** Öneri (insan onayı bekliyor)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §10
 - **Tasarım:** 0003–0011

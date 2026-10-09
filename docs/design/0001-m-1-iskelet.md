@@ -1,6 +1,6 @@
 # Tasarım 0001: M-1 iskelet ve kalite kapıları
 
-- **Durum:** İnsan onayı bekliyor (bu PR)
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M-1
 - **İlgili ADR'ler:** 0015, 0016, 0018, 0020, 0021
 - **Crate'ler:** tüm crate iskeletleri, `xtask`

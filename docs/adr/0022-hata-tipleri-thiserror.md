@@ -1,6 +1,6 @@
 # ADR 0022: Kütüphane hata tipleri: `thiserror`
 
-- **Durum:** Öneri (insan onayı bekliyor)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §9
 - **Tasarım:** 0003–0010

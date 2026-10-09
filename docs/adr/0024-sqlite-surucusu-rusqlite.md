@@ -1,6 +1,6 @@
 # ADR 0024: SQLite sürücüsü: `rusqlite` (bundled) + tek yazar aktör
 
-- **Durum:** Öneri (insan onayı bekliyor)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §8, §14 açık kararlar
 - **Tasarım:** 0007

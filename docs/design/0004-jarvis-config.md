@@ -1,6 +1,6 @@
 # Tasarım 0004: `jarvis-config`
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 3)
 - **İlgili ADR'ler:** 0002, 0027, 0030
 - **Bağımlılıklar:** `jarvis-types`, `serde`, `toml`, `thiserror`

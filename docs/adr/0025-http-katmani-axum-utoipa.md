@@ -1,6 +1,6 @@
 # ADR 0025: HTTP katmanı: `axum`, `tower`, `utoipa`; systemd: `sd-notify`
 
-- **Durum:** Öneri (insan onayı bekliyor)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §4, §11
 - **Tasarım:** 0009, 0010

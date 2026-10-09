@@ -1,6 +1,6 @@
 # Tasarım 0008: `jarvis-core` (+ minimal `jarvis-tools`, `jarvis-approval`)
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 8, 9)
 - **İlgili ADR'ler:** 0003, 0006, 0010, 0014, 0029
 - **Bağımlılıklar:** core: `jarvis-types`, `-provider`, `-session`, `-events`, `-tools`,

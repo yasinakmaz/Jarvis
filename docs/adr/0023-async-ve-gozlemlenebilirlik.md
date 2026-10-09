@@ -1,6 +1,6 @@
 # ADR 0023: Async çalışma zamanı ve gözlemlenebilirlik
 
-- **Durum:** Öneri (insan onayı bekliyor)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §3, §12
 - **Tasarım:** 0005, 0008, 0010

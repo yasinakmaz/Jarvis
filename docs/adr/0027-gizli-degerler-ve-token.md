@@ -1,6 +1,6 @@
 # ADR 0027: Gizli değerler `secrecy`; API token'ı sabit dosya + açık döndürme
 
-- **Durum:** Öneri (insan onayı bekliyor)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §4, §8, §14 açık kararlar
 - **Tasarım:** 0006, 0010

@@ -22,3 +22,108 @@ reason = "xtask: cargo metadata, crates.io API ve hook girdisi (JSON)."
 name = "toml"
 adr = "0020"
 reason = "xtask: Cargo.toml ve kapı yapılandırma dosyalarını ayrıştırma."
+
+[[crate]]
+name = "thiserror"
+adr = "0022"
+reason = "Kütüphane crate'lerinde tipli hatalar."
+
+[[crate]]
+name = "tokio"
+adr = "0023"
+reason = "Tek async çalışma zamanı (Mimari §3)."
+
+[[crate]]
+name = "tokio-util"
+adr = "0023"
+reason = "CancellationToken: her bekleme noktasında iptal."
+
+[[crate]]
+name = "tokio-stream"
+adr = "0023"
+reason = "Broadcast olaylarını SSE akışına çevirme."
+
+[[crate]]
+name = "futures-util"
+adr = "0023"
+reason = "Stream birleştiricileri (akışlı yanıtlar)."
+
+[[crate]]
+name = "tracing"
+adr = "0023"
+reason = "Yapılandırılmış günlük ve span'lar (Mimari §12)."
+
+[[crate]]
+name = "tracing-subscriber"
+adr = "0023"
+reason = "JSON günlük biçimi, journald."
+
+[[crate]]
+name = "rusqlite"
+adr = "0024"
+reason = "SQLite sürücüsü (bundled), tek yazar aktör."
+
+[[crate]]
+name = "axum"
+adr = "0025"
+reason = "HTTP API (Mimari §2, §4); yalnızca jarvis-api ve testkit."
+
+[[crate]]
+name = "tower"
+adr = "0025"
+reason = "Gövde sınırı ve zaman aşımı katmanları."
+
+[[crate]]
+name = "utoipa"
+adr = "0025"
+reason = "Koddan OpenAPI belgesi (openapi.json)."
+
+[[crate]]
+name = "sd-notify"
+adr = "0025"
+reason = "systemd Type=notify ve watchdog."
+
+[[crate]]
+name = "uuid"
+adr = "0026"
+reason = "UUID v7 kimlikler."
+
+[[crate]]
+name = "time"
+adr = "0026"
+reason = "UTC zaman damgaları, RFC 3339."
+
+[[crate]]
+name = "secrecy"
+adr = "0027"
+reason = "Sağlayıcı anahtarlarını bellekte maskeli tutma."
+
+[[crate]]
+name = "getrandom"
+adr = "0027"
+reason = "API token'ı üretimi."
+
+[[crate]]
+name = "async-openai"
+adr = "0004"
+reason = "OpenAI uyumlu istemci ve tel tipleri (ADR 0029 sınırlarıyla)."
+
+[[crate]]
+name = "proptest"
+adr = "0028"
+reason = "Özellik tabanlı testler (L1)."
+
+[[crate]]
+name = "insta"
+adr = "0028"
+reason = "Anı görüntüsü testleri (/tools, olay adları)."
+
+[[crate]]
+name = "tempfile"
+adr = "0028"
+reason = "Gerçek dosya sistemi testleri (L5a)."
+
+[[crate]]
+name = "reqwest"
+adr = "0028"
+reason = "Yalnızca jarvis-testkit kaset kayıt modu."

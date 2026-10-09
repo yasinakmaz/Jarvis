@@ -1,6 +1,6 @@
 # Tasarım 0007: `jarvis-session`
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 5)
 - **İlgili ADR'ler:** 0005, 0024
 - **Bağımlılıklar:** `jarvis-types`, `rusqlite` (`bundled`), `serde_json`, `tokio` (sync), `thiserror`

@@ -1,6 +1,6 @@
 # ADR 0026: Kimlikler `uuid` v7, zaman `time`
 
-- **Durum:** Öneri (insan onayı bekliyor)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §3, §12
 - **Tasarım:** 0003

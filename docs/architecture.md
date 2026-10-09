@@ -795,13 +795,13 @@ sonuçlar: `docs/m0/checklist.md`.
 
 | Karar | Seçenekler | Ne zaman |
 | --- | --- | --- |
-| SQLite sürücüsü | `sqlx` / `rusqlite` | M1 başı — öneri: `rusqlite` (ADR 0024) |
+| SQLite sürücüsü | `sqlx` / `rusqlite` | Karar: `rusqlite` (ADR 0024) |
 | Fixture uygulamasının aracı | Rust Wayland istemcisi / GTK / Qt | M0 |
 | `act` seviyesi varsayılan politika | Otomatik+kayıt / her zaman onay | M2 |
 | Depo gizliliği | Özel / açık | Şimdi (kullanıcı doğrulamalı) |
-| Token dosyasının yeri ve döndürülmesi | Sabit dosya / dönen token | M1 — öneri: sabit dosya + `--rotate-token` (ADR 0027) |
-| Otomatik sağlayıcı değiştirme | Yok (öneri) / sağlayıcı listesi | M1 — öneri: yok (ADR 0030) |
-| Kütüphane hata tipi | `thiserror` / elle | M1 başı — öneri: `thiserror` (ADR 0022) |
+| Token dosyasının yeri ve döndürülmesi | Sabit dosya / dönen token | Karar: sabit dosya + `--rotate-token` (ADR 0027) |
+| Otomatik sağlayıcı değiştirme | Yok (öneri) / sağlayıcı listesi | Karar: yok (ADR 0030) |
+| Kütüphane hata tipi | `thiserror` / elle | Karar: `thiserror` (ADR 0022) |
 
 ## 15. Karar kaydı (ADR özeti)
 
@@ -830,16 +830,16 @@ Her biri `docs/adr/` altında ayrı bir dosyadır.
 | 0019 | RPM paketi; otomatik güncelleme yok |
 | 0020 | xtask bağımlılıkları (`anyhow`, `serde`, `serde_json`, `toml`) |
 | 0021 | Kalite kapısı uygulama ayrıntıları (M-1) |
-| 0022 | Kütüphane hata tipleri: `thiserror` (öneri) |
-| 0023 | Async çalışma zamanı ve gözlemlenebilirlik (öneri) |
-| 0024 | SQLite sürücüsü: `rusqlite` (bundled) + tek yazar aktör (öneri) |
-| 0025 | HTTP katmanı: `axum`, `tower`, `utoipa`; `sd-notify` (öneri) |
-| 0026 | Kimlikler `uuid` v7, zaman `time` (öneri) |
-| 0027 | Gizli değerler `secrecy`; token sabit dosya + açık döndürme (öneri) |
-| 0028 | Test bağımlılıkları (öneri) |
-| 0029 | Alan modeli tel biçiminden ayrıdır (öneri) |
-| 0030 | Otomatik sağlayıcı değiştirme yok (öneri) |
-| 0031 | `jarvis-testkit` crate'i (öneri) |
+| 0022 | Kütüphane hata tipleri: `thiserror` |
+| 0023 | Async çalışma zamanı ve gözlemlenebilirlik |
+| 0024 | SQLite sürücüsü: `rusqlite` (bundled) + tek yazar aktör |
+| 0025 | HTTP katmanı: `axum`, `tower`, `utoipa`; `sd-notify` |
+| 0026 | Kimlikler `uuid` v7, zaman `time` |
+| 0027 | Gizli değerler `secrecy`; token sabit dosya + açık döndürme |
+| 0028 | Test bağımlılıkları |
+| 0029 | Alan modeli tel biçiminden ayrıdır |
+| 0030 | Otomatik sağlayıcı değiştirme yok |
+| 0031 | `jarvis-testkit` crate'i |
 
 ## 16. Sözlük ve kaynaklar
 

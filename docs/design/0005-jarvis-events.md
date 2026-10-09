@@ -1,6 +1,6 @@
 # Tasarım 0005: `jarvis-events`
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 4)
 - **İlgili ADR'ler:** 0010, 0023
 - **Bağımlılıklar:** `jarvis-types`, `serde`, `serde_json`, `tokio` (sync), `thiserror`

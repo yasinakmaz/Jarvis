@@ -1,6 +1,6 @@
 # ADR 0031: `jarvis-testkit` crate'i (üretim dışı)
 
-- **Durum:** Öneri (insan onayı bekliyor)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §2, §10
 - **Tasarım:** 0011

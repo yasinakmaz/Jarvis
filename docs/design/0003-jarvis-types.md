@@ -1,6 +1,6 @@
 # Tasarım 0003: `jarvis-types`
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 2)
 - **İlgili ADR'ler:** 0022, 0026, 0029
 - **Bağımlılıklar:** `serde`, `serde_json`, `thiserror`, `uuid` (v7, serde), `time` (serde, formatting)

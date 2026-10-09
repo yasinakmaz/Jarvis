@@ -1,6 +1,6 @@
 # ADR 0021: Kalite kapısı uygulama ayrıntıları (M-1)
 
-- **Durum:** Kabul edildi (insan onayı bekliyor: bu PR'ın gözden geçirilmesi)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §9, §13 M-1
 - **Tasarım:** `docs/design/0001-m-1-iskelet.md`

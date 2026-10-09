@@ -1,6 +1,6 @@
 # Tasarım 0006: `jarvis-provider`
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 7)
 - **İlgili ADR'ler:** 0002, 0004, 0027, 0029, 0030
 - **Bağımlılıklar:** `jarvis-types`, `jarvis-config`, `async-openai` (`chat-completion`, `model`,

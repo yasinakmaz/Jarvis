@@ -1,6 +1,6 @@
 # Tasarım 0009: `jarvis-api`
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 10)
 - **İlgili ADR'ler:** 0002, 0005, 0012, 0025, 0027, 0029
 - **Bağımlılıklar:** `jarvis-types`, `jarvis-core`, `axum`, `tower`, `utoipa`, `async-openai`

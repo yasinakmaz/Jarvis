@@ -1,6 +1,6 @@
 # ADR 0029: Alan modeli tel biçiminden ayrıdır
 
-- **Durum:** Öneri (insan onayı bekliyor)
+- **Durum:** Kabul edildi (2026-10-09, Yasin Akmaz onayı)
 - **Tarih:** 2026-10-09
 - **Mimari:** `docs/architecture.md` §2, §4, §5
 - **Tasarım:** 0002, 0003, 0006, 0009

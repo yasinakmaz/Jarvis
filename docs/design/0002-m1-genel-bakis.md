@@ -1,6 +1,6 @@
 # Tasarım 0002: M1 genel bakış — çekirdek + API
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1
 - **İlgili ADR'ler:** 0022–0031 (öneri), 0002, 0003, 0004, 0005, 0010, 0014
 - **Alt tasarımlar:** 0003 types · 0004 config · 0005 events · 0006 provider · 0007 session ·

@@ -1,6 +1,6 @@
 # Tasarım 0010: `jarvisd` bağlama
 
-- **Durum:** İnsan onayı bekliyor
+- **Durum:** Onaylandı (2026-10-09, Yasin Akmaz)
 - **Kilometre taşı:** M1 (PR 11)
 - **İlgili ADR'ler:** 0001, 0023, 0025, 0027
 - **Bağımlılıklar:** tüm M1 crate'leri, `tokio` (rt-multi-thread, signal), `tracing-subscriber`
