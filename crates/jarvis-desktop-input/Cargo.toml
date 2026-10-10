@@ -1,0 +1,11 @@
+[package]
+name = "jarvis-desktop-input"
+description = "Girdi arka ucu: XDG RemoteDesktop portalı + libei (reis)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true

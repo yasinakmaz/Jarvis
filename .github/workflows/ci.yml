@@ -1,0 +1,98 @@
+# İnce kabuk: tüm mantık `cargo xtask` içindedir (Mimari §11, ADR 0018).
+# Yerelde `cargo xtask verify` ne diyorsa CI da onu der.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: "0"
+  DNF_PACKAGES: >-
+    gcc git curl tar gzip xz unzip findutils diffutils which jq python3
+
+jobs:
+  verify:
+    # Fork PR'ları çalışmaz (Mimari §11).
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    container: fedora:44
+    timeout-minutes: 90
+    steps:
+      - name: Sistem paketleri
+        run: dnf install -y --setopt=install_weak_deps=False $DNF_PACKAGES
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Git güvenli dizin
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: ./.github/actions/setup
+        with:
+          gate-tools: "true"
+      - name: Taban ref
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          case "$EVENT" in
+            pull_request) base="origin/$PR_BASE" ;;
+            push) if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+                    base=root; else base="$BEFORE"; fi ;;
+            *) base=origin/main ;;
+          esac
+          echo "JARVIS_BASE_REF=$base" >> "$GITHUB_ENV"
+          echo "taban: $base"
+      - name: cargo xtask verify
+        run: cargo xtask verify
+
+  selftest:
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    container: fedora:44
+    timeout-minutes: 30
+    steps:
+      - name: Sistem paketleri
+        run: dnf install -y --setopt=install_weak_deps=False $DNF_PACKAGES
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - name: cargo xtask selftest
+        run: cargo xtask selftest
+
+  build:
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    container: fedora:44
+    timeout-minutes: 30
+    steps:
+      - name: Sistem paketleri
+        run: dnf install -y --setopt=install_weak_deps=False $DNF_PACKAGES
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - name: Release derlemesi
+        run: cargo build --release --locked --package jarvisd --package jarvis-cli
+      - name: İkili duman testi
+        run: |
+          ./target/release/jarvisd --version
+          ./target/release/jarvis --version

@@ -1,0 +1,21 @@
+schema_version = 1
+
+[providers.nvidia]
+base_url = "https://integrate.api.nvidia.com/v1"
+api_key_env = "MISSING_KEY"
+model = "meta/llama-3.3-70b-instruct"
+capabilities = ["tools"]
+requests_per_minute = 40
+timeout_seconds = 60
+
+[providers.empty]
+base_url = "https://integrate.api.nvidia.com/v1"
+api_key_env = "EMPTY_KEY"
+model = "meta/llama-3.3-70b-instruct"
+capabilities = ["tools"]
+requests_per_minute = 40
+timeout_seconds = 60
+
+[roles]
+planner = "nvidia"
+fast = "empty"

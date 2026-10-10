@@ -1,0 +1,3 @@
+# cargo-mutants (Mimari §9 Katman 4). xtask kapı aracıdır; mutasyon kapsamı dışında.
+exclude_globs = ["xtask/**"]
+test_tool = "nextest"

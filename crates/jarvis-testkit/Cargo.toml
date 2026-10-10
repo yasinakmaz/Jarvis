@@ -1,0 +1,26 @@
+[package]
+name = "jarvis-testkit"
+description = "Test sahteleri (FakeClock, MemorySessions, StubLlm, kaset sunucusu; ileride FakeTool). Üretim dışı."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+axum.workspace = true
+jarvis-provider = { path = "../jarvis-provider" }
+jarvis-session = { path = "../jarvis-session" }
+jarvis-types = { path = "../jarvis-types" }
+serde = { workspace = true, features = ["derive"] }
+serde_json.workspace = true
+thiserror.workspace = true
+tokio = { workspace = true, features = ["net", "rt", "sync", "time"] }
+tokio-util.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+tokio = { workspace = true, features = ["io-util", "macros", "net", "rt", "rt-multi-thread", "time"] }
+
+[lints]
+workspace = true

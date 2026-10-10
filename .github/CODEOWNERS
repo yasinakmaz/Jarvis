@@ -1,0 +1,13 @@
+# Kalite kapıları ve CI yalnızca insan onayıyla değişir (Mimari §9 Katman 5, §11).
+*                       @yasinakmaz
+/Cargo.toml             @yasinakmaz
+/clippy.toml            @yasinakmaz
+/rustfmt.toml           @yasinakmaz
+/rust-toolchain.toml    @yasinakmaz
+/architecture.toml      @yasinakmaz
+/deny.toml              @yasinakmaz
+/supply-chain/          @yasinakmaz
+/xtask/                 @yasinakmaz
+/.cargo/                @yasinakmaz
+/.claude/               @yasinakmaz
+/.github/               @yasinakmaz

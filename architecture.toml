@@ -1,0 +1,114 @@
+# Katman yönü sözleşmesi (Mimari §2, §9 Katman 3). Yalnızca insan değiştirir.
+#
+# `cargo xtask verify` bu dosyayı `cargo metadata` çıktısıyla karşılaştırır:
+#   * Workspace'teki her paket burada tanımlı olmalıdır.
+#   * Bir paketin iç (workspace) bağımlılıkları `allowed` listesinde olmalıdır;
+#     yalnızca dev-dependency olarak kullanılanlar `dev_allowed`'da da olabilir.
+#   * `forbidden_external`: paketin doğrudan bağlanamayacağı üçüncü taraf crate'ler.
+#   * `production = false` olan paketlere hiçbir üretim paketi bağlanamaz.
+#   * Tanımlı olup henüz var olmayan paketler (planlanan) hata değildir.
+
+[defaults]
+# Taşıma/HTTP crate'leri; çekirdeğe ve tiplere girmez.
+http_crates = ["axum", "hyper", "reqwest", "tower-http", "warp", "actix-web", "ureq", "isahc", "surf"]
+
+[crates.jarvis-types]
+allowed = []
+
+[crates.jarvis-config]
+allowed = ["jarvis-types"]
+
+[crates.jarvis-events]
+allowed = ["jarvis-types"]
+
+[crates.jarvis-provider]
+allowed = ["jarvis-types", "jarvis-config"]
+dev_allowed = ["jarvis-testkit"]
+
+[crates.jarvis-session]
+allowed = ["jarvis-types"]
+
+[crates.jarvis-approval]
+allowed = ["jarvis-types", "jarvis-events"]
+
+[crates.jarvis-tools]
+allowed = ["jarvis-types", "jarvis-approval"]
+
+[crates.jarvis-desktop-input]
+allowed = ["jarvis-types"]
+
+[crates.jarvis-desktop-shot]
+allowed = ["jarvis-types"]
+
+[crates.jarvis-desktop-win]
+allowed = ["jarvis-types"]
+
+[crates.jarvis-desktop-atspi]
+allowed = ["jarvis-types", "jarvis-desktop-win"]
+
+[crates.jarvis-desktop]
+allowed = [
+    "jarvis-types",
+    "jarvis-tools",
+    "jarvis-desktop-input",
+    "jarvis-desktop-shot",
+    "jarvis-desktop-win",
+    "jarvis-desktop-atspi",
+]
+
+[crates.jarvis-core]
+allowed = [
+    "jarvis-types",
+    "jarvis-provider",
+    "jarvis-session",
+    "jarvis-approval",
+    "jarvis-events",
+    "jarvis-tools",
+]
+dev_allowed = ["jarvis-testkit"]
+forbidden_external = ["@http_crates"]
+
+[crates.jarvis-api]
+allowed = ["jarvis-types", "jarvis-core"]
+dev_allowed = ["jarvis-testkit"]
+
+[crates.jarvisd]
+allowed = [
+    "jarvis-types",
+    "jarvis-config",
+    "jarvis-events",
+    "jarvis-provider",
+    "jarvis-session",
+    "jarvis-approval",
+    "jarvis-tools",
+    "jarvis-desktop",
+    "jarvis-desktop-input",
+    "jarvis-desktop-shot",
+    "jarvis-desktop-win",
+    "jarvis-desktop-atspi",
+    "jarvis-core",
+    "jarvis-api",
+]
+dev_allowed = ["jarvis-testkit"]
+
+[crates.jarvis-cli]
+allowed = ["jarvis-types"]
+
+[crates.jarvis-testkit]
+# ADR 0031: test sahteleri ve kaset sunucusu; üretim ikililerine girmez.
+allowed = [
+    "jarvis-types",
+    "jarvis-provider",
+    "jarvis-session",
+    "jarvis-tools",
+    "jarvis-approval",
+]
+production = false
+
+[crates.jarvis-fixture]
+allowed = []
+production = false
+
+[crates.xtask]
+allowed = []
+production = false

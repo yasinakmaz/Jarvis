@@ -1,0 +1,14 @@
+schema_version = 1
+
+[providers.small]
+base_url = "https://integrate.api.nvidia.com/v1"
+api_key_env = "NVIDIA_API_KEY"
+model = "small-model"
+capabilities = ["streaming"]
+requests_per_minute = 40
+timeout_seconds = 60
+
+[roles]
+planner = "small"
+fast = "small"
+vision = "small"

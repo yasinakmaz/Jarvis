@@ -1,0 +1,28 @@
+[package]
+name = "jarvis-provider"
+description = "OpenAI uyumlu sağlayıcı istemcisi, rol yönlendirme, hız sınırı ve geri çekilme."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+async-openai.workspace = true
+futures-util = { workspace = true, features = ["std"] }
+jarvis-config = { path = "../jarvis-config" }
+jarvis-types = { path = "../jarvis-types" }
+secrecy.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio = { workspace = true, features = ["macros", "rt", "sync", "time"] }
+tokio-util.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+jarvis-testkit = { path = "../jarvis-testkit" }
+proptest.workspace = true
+tokio = { workspace = true, features = ["macros", "rt", "rt-multi-thread", "time"] }
+
+[lints]
+workspace = true

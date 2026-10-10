@@ -1,0 +1,19 @@
+colour: bilinmeyen alan
+server.listen: 192.168.1.5 reddedildi; 127.0.0.1 kullanın
+server.listen: port 0 olamaz; sabit bir port verin (ör. 7878)
+limits.max_steps: 0 aralık dışında (1..=4294967295)
+limits.max_run_seconds: -5 aralık dışında (1..=4294967295)
+limits.repeat_threshold: tamsayı bekleniyordu, metin bulundu
+providers.Bad: 'Bad' geçersiz sağlayıcı adı (küçük harfle başlar; a-z, 0-9, _ ve -; ≤ 32)
+providers.Bad.base_url: 'http://api.example.com/v1' reddedildi: düz metin http yalnızca loopback (127.0.0.1, ::1, localhost) için
+providers.Bad.api_key_env: '1KEY' geçersiz ortam değişkeni adı (harf veya _ ile başlar; A-Z, 0-9, _)
+providers.Bad.model: boş olamaz
+providers.Bad.capabilities[1]: 'tools' iki kez yazılmış
+providers.Bad.capabilities[2]: 'telepathy' bilinmeyen yetenek (tools, vision, streaming)
+providers.Bad.capabilities[3]: metin bekleniyordu, tamsayı bulundu
+providers.Bad.requests_per_minute: 0 aralık dışında (1..=4294967295)
+providers.Bad.timeout_seconds: 4294967296 aralık dışında (1..=4294967295)
+providers.ok.capabilities: dizi bekleniyordu, metin bulundu
+roles.vison: bilinmeyen alan (vision mi?)
+roles.planner: 'ghost' adlı sağlayıcı tanımlı değil ([providers.ghost] ekleyin)
+roles.fast: 'Bad' geçersiz sağlayıcı adı (küçük harfle başlar; a-z, 0-9, _ ve -; ≤ 32)
