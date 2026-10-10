@@ -114,3 +114,61 @@ sağlayıcının `base_url`'i ona yönelir — üretim kodunda kaset dalı yoktu
 | L2 | Bekleme sırasında iptal → `Cancelled`, ek istek yok | İstek sayısı |
 | L3 | Kaydedilmiş NVIDIA yanıtları (metin, araç çağrısı, akış) | Kaset |
 | L1 | `redact` anahtarı ve `Bearer` desenini maskeler | Metin |
+
+## Uygulama notları (PR 7; onay bekliyor)
+
+Onaylı tasarımdan sapmalar ve netleştirmeler. **1, 2 ve 3 numaralı maddeler tasarım metniyle
+çelişir veya bir şeyi eksik bırakır; onay gerektirir.**
+
+1. **Kütüphanenin kendi yeniden denemesi kapatıldı (`middleware` özelliği).** `async-openai`
+   0.42 varsayılan istemcisi 429/5xx'te kendi içinde, gerçek `tokio::time::sleep` ile yeniden
+   dener. Bu, saat-enjekteli geri çekilme, `RetryObserver` bildirimi ve "sessiz geri dönüş yok"
+   kuralıyla çelişir (bekleme gözlenemez, `FakeClock` ile sınanamaz). Çözüm:
+   `with_http_service(ReqwestService::default())` ile yeniden deneme katmanı olmayan taşıma
+   takıldı; deneme sayısı ve bekleme yalnızca `OpenAiModel`de. Bunun için kütüphanenin
+   `middleware` özelliği açıldı (ADR 0004'e eklendi). Yeni **doğrudan** bağımlılık yoktur;
+   `tower`/`reqwest` geçişlidir.
+2. **`Retry-After` şimdilik yok sayılır.** Kütüphane hata yolunda yanıt başlıklarını
+   iletmez (`ApiErrorResponse` yalnızca durum ve gövde taşır). Tasarımdaki "429 + Retry-After →
+   o kadar bekle" davranışı yerine kendi geri çekilme (0,5 s · 2ⁿ) uygulanır;
+   `ProviderError::RateLimited::retry_after` bu yüzden hep `None`. Test
+   `a_retry_after_header_is_not_honoured_yet_the_own_backoff_applies` bunu belgeler. Çözüm için
+   seçenekler (karar sizin): (a) `tower`'ı `jarvis-provider`'a doğrudan bağımlılık yapıp başlığı
+   yakalayan özel bir servis yazmak (allowlist girdisi var, gerekçesi yalnızca `jarvis-api`
+   için yazılmış); (b) kütüphane bu bilgiyi iletene kadar beklemek.
+3. **JSON olmayan 4xx gövdesi `Rejected` değil `InvalidResponse` olur.** Kütüphane, hata gövdesi
+   `{"error": {...}}` biçiminde değilse (ör. yanlış `base_url`te HTML 404) durum kodunu
+   atar. Yeniden denenmez, mesaj gövdeyi (maskeli, 512 karaktere kısaltılmış) içerir.
+4. **İmza:** `ChatModel::complete` ve `RawChat::forward` ek olarak `observer: &dyn
+   RetryObserver` alır (tasarımın "ChatModel'e verilen RetryObserver" cümlesinin somut
+   hali; trait nesne-güvenli kalır). Bildirim her beklemeden önce gelir:
+   `RetryNotice { attempt, delay, reason }`.
+5. **Ek `ProviderError` değişkenleri:** `InvalidRequest` (M4'e kadar görüntü girdisi, boş
+   istek, nesne olmayan passthrough gövdesi; hiçbiri sessizce düşürülmez) ve `MissingKey`
+   (`from_config`: anahtar ortam değişkeni tanımsız, boş ya da UTF-8 değil). `code()` →
+   `ErrorCode` eşlemesi eklendi.
+6. **`Router::from_config`:** `SecretLookup` yerine `jarvis_config::EnvLookup` (yeni trait
+   gereksiz). `from_config_with_jitter` ek. Aynı sağlayıcıyı paylaşan roller **tek**
+   `OpenAiModel`i (dolayısıyla tek hız sınırı kovasını) paylaşır; test eder.
+7. **Hız sınırı:** GCRA biçimli kova (kapasite = dakikalık istek sayısı, aralık = 60/n sn).
+   Yeniden denemeler de kovadan geçer. İptal edilen çağrı belirteç tüketmez.
+8. **Jitter:** `Jitter` trait'i; `NoJitter` (test) ve `RandomJitter` (yalnızca std
+   `RandomState`, yeni bağımlılık yok). Jitter en çok taban beklemenin %25'idir ve
+   kaynak bunu aşsa bile kırpılır.
+9. **`max_tokens`** gönderilir (`max_completion_tokens` değil): uyumlu sağlayıcıların çoğu
+   yenisini bilmez.
+10. **Yanıt eşleme:** `argüman` metni JSON değilse ham metin `Value::String` taşınır
+    (çağrıyı reddedip modele "geçersiz argüman" dönmek `jarvis-core`'un işi); geçersiz araç
+    adı/kimliği, `custom` araç, `finish_reason` yokluğu, boş `choices` → `InvalidResponse`
+    (koşul düşer; model kendini düzeltemez — M2'de core ile gözden geçirilecek açık nokta).
+    `refusal` metni içerik olarak görünür. Yalnızca ilk seçenek kullanılır.
+11. **Passthrough akışı:** akış kurulana dek yeniden deneme vardır, sonra yoktur. Hata, iptal ya
+    da istek zaman aşımı kadar sessizlik akışın **son öğesi** olan bir `Err` üretir; `[DONE]`
+    iletilmez.
+12. **Ortam sızıntısı:** kütüphane `OPENAI_ORG_ID`/`OPENAI_PROJECT_ID`'yi ortamdan okur ve
+    başlık olarak gönderir; üçüncü taraf sağlayıcıya sızardı. İkisi boş atanır. Test oracle'ı
+    zayıftır (CI'da bu değişkenler tanımsız): yalnızca başlık adlarının yokluğunu denetler.
+13. **L3 kasetleri elle yazıldı** (NVIDIA biçimli: `tool_calls: []`, `stop_reason`,
+    `chatcmpl-tool-…`, SSE). Canlı kayıt değildir; PR 12'de (NVIDIA anahtarıyla, yerelde)
+    değiştirilecek. `tests/cassettes/README.md` bunu açıkça yazar.
+14. **Sürüm sabit:** `async-openai =0.42.1` (ADR 0004'te denetlenen sürüm).

@@ -95,3 +95,17 @@ impl CassetteServer {
 - **`MemorySessions`:** `jarvis_session::Store` ile aynı gözlenebilir davranış; bunu aynı
   senaryoyu iki uygulamada çalıştıran sözleşme testi kanıtlar (oracle gerçek SQLite).
   Ek olarak `runs()` (oracle) ve `fail_with(Some(hata))` (hata yolu testleri).
+
+## Uygulama notları (PR 7)
+
+- **`StubLlm`** `jarvis-provider`'ın `ChatModel` trait'ini uygular; isteği **çağrı anında**
+  kaydeder ve senaryo adımını o anda alır. Senaryo bitince `ProviderError::InvalidRequest(
+  "StubLlm: beklenmeyen çağrı #n")` döner (tasarımdaki açık hata).
+- **`CassetteServer`** bu PR'da yalnızca **tekrar modu**: kayıt modu (`reqwest`, canlı API)
+  PR 12'ye kalır. Eklenenler: yanıtta `text` (JSON olmayan gövde, ör. HTML hata sayfası) ve
+  `delay_ms` (gerçek zamanlı gecikme; zaman aşımı/iptal testleri), `Recorded` (başlık dahil
+  oracle), `replay_str` (bellekteki kaset). Uyuşmazlık, tükenme ve kullanılmayan tur
+  `assert_exhausted` ile kırmızıdır; uyuşmazlık yanıtı 500 + ilk farkın JSON işaretçisidir.
+- **Test kilitlenmesi:** uyuşmayan tur 500 döner ve 500 yeniden denenir; saat ilerlemezse bu
+  sonsuza dek beklerdi. Sağlayıcı testleri bu yüzden gerçek zamanda 10/20 sn'lik bekçiyle
+  (`within`/`drive`) çalışır ve süre aşımında nedeniyle birlikte düşer.

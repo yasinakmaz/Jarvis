@@ -30,3 +30,12 @@ ADR 0029).
 ## Reddedilen alternatifler
 
 El yapımı HTTP istemcisi: tip bakımı ve uyumsuzluk riski.
+
+### Ek (PR 7, 2026-10-10): `middleware` özelliği
+
+`async-openai` varsayılan istemcisi 429/5xx'te kendi içinde gerçek zamanla yeniden dener.
+`jarvis-provider` bekleme ve deneme sayısını enjekte edilen saatle kendi yönettiği için bu
+katman kapatılmalıdır; bunun yolu `Client::with_http_service` olup kütüphanenin `middleware`
+özelliğini gerektirir. Özellik listesi: `chat-completion`, `model`, `byot`, `middleware`
+(varsayılan `rustls`). Yeni doğrudan bağımlılık yoktur; sürüm `=0.42.1`e sabitlendi.
+Ayrıntı: Tasarım 0006 uygulama notları.
