@@ -22,6 +22,6 @@ runs:
       uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
     - name: Kapı araçları
       if: inputs.gate-tools == 'true'
-      uses: taiki-e/install-action@f7e5d7c961414b23f5b25b2da9294395d08513ad # v2.87.26
+      uses: taiki-e/install-action@5488ac5a951645ce95062214902ac4b6bc1a1037 # v2.87.32
       with:
         tool: cargo-nextest@0.9.148,cargo-deny@0.20.2,cargo-llvm-cov@0.9.1,cargo-mutants@27.1.0,cargo-machete@0.9.2,cargo-hack@0.6.45
